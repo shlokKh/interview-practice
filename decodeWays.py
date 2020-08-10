@@ -7,6 +7,9 @@
 check if the two le
 '''
 from functools import lru_cache
+'''
+O(2^n) not really anymore because we cache, but w/o caching
+'''
 
 @lru_cache(maxsize=None)
 def helper(s):
@@ -25,7 +28,23 @@ def helper(s):
 def bruteForce(s):
     return helper(s)
 
+'''
+O(n) lets gooooooooo :) 
+'''
 def dynamicProgramming(s):
     dp = [0]*(len(s)+1)
+    dp[0] = 1
+    dp[1] = 0 if s[0] == '0' else 1
+
+    for i in range(2, len(s)+1):
+        first = int(s[i-1:i])
+        second = int(s[i-2:i])
+        if first >= 1 and first <= 9:
+            dp[i] += dp[i-1]
+        if second >= 10 and second <= 26:
+            dp[i] += dp[i-2]
+
+    return dp[-1]
 
 print(bruteForce("226"))
+print(dynamicProgramming("12"))
